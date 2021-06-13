@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes. Task 1</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <section id="notes" class="note">
+        <h1>Notes</h1>
+        <form @submit.prevent="onSubmit">
+            <input v-model="input.value" type="text" placeholder="Your note" required>
+            <button type="submit">Add new note</button>
+        </form>
+        <ol class="note__list">
+            <li class="note__item" v-for="(note, index) in notes" :key="index">
+                <form v-if="changing == index" @submit.prevent="onSubmitChangeNote(note, index)">
+                    <input type="text" :value="note" v-model="note" required>
+                </form>
+                <p v-else class="note__item-text">
+                    <span class="note__item-close" tabindex="1"  @click="removeNote(index)"></span>
+                    <span @click="changeNote(index)">{{ note }}</span>
+                </p>
+            </li>
+        </ol>
+    </section>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
