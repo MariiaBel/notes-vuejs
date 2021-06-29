@@ -43,3 +43,9 @@ html {
     background-color: palevioletred;
     transform: translateX(0.5rem) rotate(-45deg);
 }
+.note__error {
+    color: red;
+    font-size: 0.7em;
+    display: inline-block;
+    min-height: 1em;
+}

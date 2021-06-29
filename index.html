@@ -13,18 +13,19 @@
 
     <section id="notes" class="note">
         <h1>Notes</h1>
+        <span class="note__error">{{ error }}</span>
         <form @submit.prevent="onSubmit">
-            <input v-model="input.value" type="text" placeholder="Your note" required>
+            <input v-model="input.value" type="text" placeholder="Your note">
             <button type="submit">Add new note</button>
         </form>
         <ol class="note__list">
-            <li class="note__item" v-for="(note, index) in notes" :key="index">
-                <form v-if="changing == index" @submit.prevent="onSubmitChangeNote(note, index)">
-                    <input type="text" :value="note" v-model="note" required>
+            <li class="note__item" v-for="(value, index) in notes" :key="index">
+                <form v-if="changing == index" @submit.prevent="event => onChange(event.target[0].value, index)">
+                    <input type="text" :value="value">
                 </form>
                 <p v-else class="note__item-text">
                     <span class="note__item-close" tabindex="1"  @click="removeNote(index)"></span>
-                    <span @click="changeNote(index)">{{ note }}</span>
+                    <span @click="changeNote(index)">{{ value }}</span>
                 </p>
             </li>
         </ol>

@@ -5,7 +5,8 @@ const Notes = {
             input: {
                 value: '',
             },
-            changing: null,
+            changing: -1,
+            error: ''
         }
     },
     mounted() {
@@ -13,12 +14,17 @@ const Notes = {
     },
     methods: {
         onSubmit() {
-            if(!this.notes.includes(this.input.value, 0))
-                this.notes.push(this.input.value);
+            if(this.isValid(this.input.value)) {
+                this.hideError()
+                this.notes.push(this.input.value.trim());
+            }
         },
-        onSubmitChangeNote(note, index) {
-            this.notes[index] = note;
-            this.changing = null;
+        onChange(value, index) {
+            if(this.isValid(value)) {
+                this.hideError();
+                this.notes[index] = value.trim();
+                this.changing = -1;
+            }
         },
         removeNote(index) {
             this.notes.splice(index, 1)
@@ -30,6 +36,24 @@ const Notes = {
             const localNotes = localStorage.getItem('notes')
             if(localNotes)
                 this.notes = JSON.parse(localNotes);
+        },
+        isValid(value) {
+            value = value.trim();
+            if( value == '' ||
+                value.length >= 256 ||
+                this.notes.includes(value, 0))
+            {
+                this.showError(value)
+                return false;
+            } else {
+                return true;
+            }
+        },
+        showError(value) {
+            this.error = `The value "${value}" is not correct!`
+        },
+        hideError() {
+            this.error = ''
         }
     },
     watch: {
